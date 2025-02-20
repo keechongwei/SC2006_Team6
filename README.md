@@ -61,7 +61,7 @@ macOS/Linux:
 6️⃣ Run the Flask Server
 `python app.py`
 
-# 📌 Setting Up the Backend (Flask)
+# 📌 Setting Up the Frontend (Flask)
 1️⃣ Navigate to the Frontend Directory
 `cd frontend`
 
