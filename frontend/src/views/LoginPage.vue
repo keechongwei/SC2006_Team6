@@ -4,7 +4,10 @@
       <form @submit.prevent="login">
         <input v-model="username" placeholder="Username" required />
         <input v-model="password" type="password" placeholder="Password" required />
-        <button type="submit">Login</button>
+        <button type="submit"> Login </button>
+        <router-link to="/register">
+        <button>Register</button>
+        </router-link>
       </form>
     </div>
   </template>
