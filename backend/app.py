@@ -18,7 +18,7 @@ username = os.environ.get("MONGO_USERNAME")
 password = os.environ.get("MONGO_PASSWORD")
 
 mongo_uri = f"mongodb+srv://{username}:{password}@cluster0.nl9y4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-#mongo_uri = "mongodb+srv://tang0551:hUvvibJrWBYImwE0@cluster0.nl9y4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
 app.config["MONGO_URI"] = mongo_uri
 mongo = PyMongo(app)
 
