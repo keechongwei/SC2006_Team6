@@ -1,6 +1,12 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
+  <h2> this is the default page for testing other pages</h2>
+  <div>
+    <nav>
+      <router-link to="/">Home</router-link> | 
+      <router-link to="/login">Login</router-link> |
+      <router-link to="/register">Register</router-link>
+    </nav>
+    <router-view />
   </div>
 </template>
 
@@ -9,6 +15,8 @@ export default {
   name: 'App'
 };
 </script>
+
+
 
 <style>
 /* Add any global styles here */
