@@ -21,7 +21,7 @@ password = os.environ.get("MONGO_PASSWORD")
 mongo_uri = f"mongodb+srv://{username}:{password}@cluster0.nl9y4.mongodb.net/SC2006_api_db?retryWrites=true&w=majority&appName=Cluster0"
 
 app.config["MONGO_URI"] = mongo_uri
-mongo = PyMongo()
+mongo = PyMongo(app)
 
 init_test_mongo(mongo)
 init_user_mongo(mongo)

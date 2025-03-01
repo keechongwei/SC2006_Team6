@@ -35,7 +35,7 @@ class User:
         #Save the user to MongoDB
         user_dict = self.to_dict()
 
-        result = db[self.COLLECTION].insert_one(user_dict)
+        result = db.db[self.COLLECTION].insert_one(user_dict)
         self.user_id = str(result.inserted_id)
         
         return self.user_id
