@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-import db
+import database as db
 
 institutions_bp = Blueprint('institutions', __name__)
 
