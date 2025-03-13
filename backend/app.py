@@ -7,8 +7,9 @@ from routes.auth import auth_bp
 from routes.institutions import institutions_bp
 from routes.test_mongo_routes import test_mongo_bp, init_mongo as init_test_mongo
 from routes.user_routes import user_bp, init_mongo as init_user_mongo
-from routes.hawker_centres_routes import hawker_bp, init_mongo as init_hawker_mongo
-from database import *
+from routes.hawker_centres_routes import hawker_bp
+from database import init_mongo as init_db_mongo
+from database import init_db
 import atexit
 import pymongo
 
@@ -26,12 +27,14 @@ mongo_uri = f"mongodb+srv://{username}:{password}@cluster0.nl9y4.mongodb.net/SC2
 app.config["MONGO_URI"] = mongo_uri
 mongo = PyMongo(app)
 
-db = init_db(app.config["MONGO_URI"])
 # Get MongoDB collections
 
 init_test_mongo(mongo)
 init_user_mongo(mongo)
-init_hawker_mongo(mongo)
+init_db_mongo(mongo)
+
+#Initialise Database
+db = init_db()
 
 # Register Blueprints
 app.register_blueprint(auth_bp)

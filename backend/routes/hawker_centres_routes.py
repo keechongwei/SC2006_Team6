@@ -2,9 +2,6 @@ from flask import Blueprint, jsonify
 from database import get_hawker_collection
 hawker_bp = Blueprint("hawker", __name__)
 
-def init_mongo(mongo_instance):
-    global mongo
-    mongo = mongo_instance
 
 @hawker_bp.route("/hawker-centres", methods=["GET"])
 def get_hawker_centres():

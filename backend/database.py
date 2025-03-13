@@ -1,10 +1,15 @@
-import pymongo
+from flask_pymongo import PyMongo
 from flask import jsonify
 from bs4 import BeautifulSoup
 import requests
 hawker_collection = None
 user_collection = None
 
+def init_mongo(mongo_instance):
+    global mongo
+    mongo = mongo_instance
+
+    
 def parse_html_table(html_content):
     """
     Parses an HTML table and extracts key-value pairs.
@@ -98,17 +103,24 @@ def get_user_collection():
     """ Returns the initialized MongoDB collection for hawker centres. """
     return user_collection
 
-def init_db(mongo_uri):
+def init_db():
     """
     Initializes MongoDB connection.
     """
-    global hawker_collection,user_collection
+    global hawker_collection,user_collection,mongo
 
-    client = pymongo.MongoClient(mongo_uri)
-    db = client["hawker_app_db"]
-    write_data(fetch_hawker_data(),db['hawker_centres'])
+    if mongo is None:
+        raise ValueError("Mongo instance not initialized. Call init_mongo first.")
+
+    db = mongo.db  # Access the database from the global mongo instance
+
+    # Write data to the correct collection
+    write_data(fetch_hawker_data(), db["hawker_centres"])
+
+    # Store collections globally for easier access
     hawker_collection = db["hawker_centres"]
     user_collection = db["users"]
+
     return db
 
 
