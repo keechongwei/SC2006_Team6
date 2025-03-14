@@ -10,9 +10,9 @@ class User:
 
     COLLECTION = 'Users'
 
-    def __init__(self, user_id, name, email, password, age=0, is_student=True,account_state=AccountState.ACTIVE):
+    def __init__(self, user_id, username, email, password, age=0, is_student=True,account_state=AccountState.ACTIVE):
         self.user_id = user_id if user_id else str(ObjectId())
-        self.name = name
+        self.username = username
         self.email = email
         self.password = password
         self.age = age
@@ -23,7 +23,7 @@ class User:
     #Convert the User object to a dictionary for MongoDB storage
         return {
             "_id": ObjectId(self.user_id) if isinstance(self.user_id, str) else self.user_id,
-            "name": self.name,
+            "username": self.username,
             "email": self.email,
             "password": self.password,
             "age": self.age,
@@ -38,6 +38,6 @@ class User:
         result = db.db[self.COLLECTION].insert_one(user_dict)
         self.user_id = str(result.inserted_id)
         
-        return self.user_id
+        return
 
 

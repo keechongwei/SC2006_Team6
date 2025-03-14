@@ -4,11 +4,10 @@ from bs4 import BeautifulSoup
 import requests
 hawker_collection = None
 user_collection = None
-
+hawker_summary = {}
 def init_mongo(mongo_instance):
     global mongo
     mongo = mongo_instance
-
     
 def parse_html_table(html_content):
     """
@@ -32,11 +31,13 @@ def parse_html_table(html_content):
 
     return parsed_data
 
-
 def fetch_hawker_data():
     """
     Fetches and formats hawker centre data from the API.
+    Stores name, address, and location in a separate global dictionary.
     """
+    global hawker_summary  # Use global variable to store summary data
+
     dataset_id = "d_4a086da0a5553be1d89383cd90d07ecd"
     url = f"https://api-open.data.gov.sg/v1/public/api/datasets/{dataset_id}/poll-download"
 
@@ -53,8 +54,6 @@ def fetch_hawker_data():
         response = requests.get(data_url)
         raw_data = response.json()  # JSON response with 'features' key
 
-        # Debugging: Print one sample feature to check structure
-
         formatted_data = []
         for feature in raw_data.get("features", []):
             properties = feature.get("properties", {})
@@ -69,7 +68,7 @@ def fetch_hawker_data():
 
             # Combine extracted values with existing properties
             hawker_centre = {
-                "name": extracted_properties.get("NAME", name),  
+                "name": extracted_properties.get("NAME", name),
                 "description": extracted_properties.get("DESCRIPTION", "No description available"),
                 "address": {
                     "block": extracted_properties.get("ADDRESSBLOCKHOUSENUMBER", "Unknown"),
@@ -86,6 +85,12 @@ def fetch_hawker_data():
                 }
             }
 
+            # Store summary details in global dictionary
+            hawker_summary[hawker_centre["name"]] = {
+                "address": hawker_centre["address"],
+                "location": hawker_centre["location"]
+            }
+
             formatted_data.append(hawker_centre)
 
         return formatted_data
@@ -94,10 +99,9 @@ def fetch_hawker_data():
         print(f"API Request Failed: {e}")
         return []
 
-
-def get_hawker_collection():
+def get_hawker_data():
     """ Returns the initialized MongoDB collection for hawker centres. """
-    return hawker_collection
+    return hawker_summary
 
 def get_user_collection():
     """ Returns the initialized MongoDB collection for hawker centres. """
@@ -119,7 +123,7 @@ def init_db():
 
     # Store collections globally for easier access
     hawker_collection = db["hawker_centres"]
-    user_collection = db["users"]
+    user_collection = db["Users"]
 
     return db
 
@@ -132,11 +136,11 @@ def write_data(data, collection):
         try:
             # Clear existing data to prevent duplicates
             delete_result = collection.delete_many({})
-            print(f"Deleted {delete_result.deleted_count} old records in {collection.name}.")
+            # print(f"Deleted {delete_result.deleted_count} old records in {collection.name}.")
 
             # Insert new data
             insert_result = collection.insert_many(data)
-            print(f"Inserted {len(insert_result.inserted_ids)} new records into {collection.name}.")
+            # print(f"Inserted {len(insert_result.inserted_ids)} new records into {collection.name}.")
 
         except Exception as e:
             print(f"Error writing to MongoDB: {e}")

@@ -11,8 +11,8 @@ def init_mongo(mongo_instance):
     global mongo
     mongo = mongo_instance
 
-@user_bp.route('/create_user', methods=['POST'])
-def create_user():
+@user_bp.route('/register', methods=['POST'])
+def register_user():
     data = request.json
     
     user = User(
