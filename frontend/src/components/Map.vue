@@ -3,6 +3,7 @@
     <div id="floating-panel">
       <b>Start: </b>
       <input type="text" v-model="startLocation" class="input-field" placeholder="Enter start location">
+      <button @click="handleGetCurrentLocation" class="location-btn">Use Current Location</button>
       <b>End: </b>
       <input type="text" v-model="endLocation" class="input-field" placeholder="Enter destination">
       <button @click="getDirections">Get Directions</button>
@@ -12,6 +13,7 @@
 </template>
 
 <script>
+import APIService from '../APIService.js';
 
 export default {
   name: 'GoogleMapDirections',
@@ -22,7 +24,7 @@ export default {
       directionsDisplay: null,
       startLocation: 'NTU',
       endLocation: 'NUS',
-      apiKey: ''  //need API key here
+      apiKey: ''
     }
   },
   mounted() {
@@ -81,7 +83,22 @@ export default {
           // this.$emit('error', 'Directions request failed due to ' + status);
         }
       });
-    }
+    },
+
+    handleGetCurrentLocation() {
+  // The getCurrentLocation method returns a Promise
+  APIService.getCurrentLocation()
+    .then(locationInfo => {
+      // This code runs AFTER the API call completes successfully
+      console.log('Received location:', locationInfo);
+      // Format the location string and update the startLocation
+      this.startLocation = `${locationInfo.latitude}, ${locationInfo.longitude}`;
+    })
+    .catch(error => {
+      console.error('Error getting current location:', error);
+      alert('Unable to retrieve your location. Please check API connection.');
+    });
+}
   }
 }
 </script>

@@ -7,6 +7,7 @@ from flask_jwt_extended import JWTManager
 from routes.institutions import institutions_bp
 from routes.hawker_centres_routes import hawker_bp
 from routes.login import login_bp, init_mongo as init_login_mongo
+from routes.location_router import location_bp
 from database import init_mongo as init_db_mongo
 from database import init_db
 
@@ -36,6 +37,7 @@ db = init_db()
 app.register_blueprint(login_bp)
 app.register_blueprint(institutions_bp)
 app.register_blueprint(hawker_bp)
+app.register_blueprint(location_bp)
 
 if __name__ == '__main__':
     app.run(debug=True)
