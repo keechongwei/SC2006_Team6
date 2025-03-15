@@ -22,7 +22,7 @@ export default {
       directionsDisplay: null,
       startLocation: 'NTU',
       endLocation: 'NUS',
-      apiKey: 'AIzaSyByQ0_LHlYRlS_WBW8C7uq4fiGZfkuGPZQ'
+      apiKey: ''  //need API key here
     }
   },
   mounted() {
