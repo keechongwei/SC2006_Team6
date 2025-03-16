@@ -27,24 +27,14 @@ def get_hawker_centres():
     if hawker_summary is None:
         return jsonify({"error": "MongoDB collection not initialized"}), 500
 
-    try:
-        data = hawker_summary
-        print(data)  # Debugging
-
-        if not data:
-            return jsonify({"message": "No hawker centres found"}), 200
-
-        return jsonify(data), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
 @hawker_bp.route("/find-nearby-hawkers", methods=["GET"])
 def find_nearby_hawkers():
     """
     Finds hawker centres within a given radius (default 1 km) of the input latitude and longitude.
-    Returns a list of names of nearby hawker centres.
+    Returns a list of nearby hawker centres with name, latitude, and longitude.
     """
     get_hawker_centres()
+    
     try:
         # Extract query parameters
         lat = request.args.get('latitude', type=float)
@@ -57,8 +47,8 @@ def find_nearby_hawkers():
         return jsonify({"error": str(e)}), 400
     
     nearby_centres = []
-    radius = 1
-    
+    radius = 1  # 1 km radius
+
     for name, details in hawker_summary.items():
         hawker_lat = details["location"].get("latitude")
         hawker_lon = details["location"].get("longitude")
@@ -69,6 +59,11 @@ def find_nearby_hawkers():
         distance = haversine(lat, lon, hawker_lat, hawker_lon)
 
         if distance <= radius:
-            nearby_centres.append(name)
+            nearby_centres.append({
+                "name": name,
+                "latitude": hawker_lat,
+                "longitude": hawker_lon,
+                "distance_km": round(distance, 2)
+            })
 
-    return nearby_centres
+    return jsonify({"nearby_centres": nearby_centres})

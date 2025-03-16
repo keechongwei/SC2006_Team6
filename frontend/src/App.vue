@@ -5,7 +5,8 @@
       <router-link to="/">Home</router-link> | 
       <router-link to="/login">Login</router-link> |
       <router-link to="/register">Register</router-link> |
-      <router-link to="/Institution">Institution</router-link>
+      <router-link to="/Institution">Institution</router-link> |
+      <router-link to ="/Hawker">Hawker</router-link>
     </nav>
     <router-view />
   </div>

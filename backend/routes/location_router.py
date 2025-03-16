@@ -8,7 +8,7 @@ location_bp = Blueprint('location', __name__, url_prefix='/api/location')
 @location_bp.route('/get_current_location', methods=['GET'])
 def get_Current_location():
     current_location = location_controller.getLoc()
-    print(current_location)
+    # print(current_location)
 
     if current_location:
         location_data = {
