@@ -62,7 +62,7 @@ macOS/Linux:
 `python app.py`
 
 # 📌 Setting Up the Frontend (Flask)
-1️⃣ Navigate to the Frontend Directory
+1️⃣ Navigating to the Frontend Directory
 `cd frontend`
 
 2️⃣ Install Dependencies
