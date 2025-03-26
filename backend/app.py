@@ -8,7 +8,7 @@ from routes.institutions import institutions_bp
 from routes.hawker_centres_routes import hawker_bp
 from routes.login import login_bp, init_mongo as init_login_mongo
 from routes.location_router import location_bp
-from routes.Institution_routes import institution_bp
+from routes.Institution_routes import institution_bp, init_mongo as init_institution_mongo
 from database import init_mongo as init_db_mongo
 from database import init_db
 
@@ -30,6 +30,7 @@ jwt = JWTManager(app)
 # Get MongoDB collections
 init_login_mongo(mongo)
 init_db_mongo(mongo)
+init_institution_mongo(mongo)
 
 #Initialise Database
 db = init_db()
